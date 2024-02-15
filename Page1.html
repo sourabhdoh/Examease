@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Navigation Bar and Breadcrumb</title>
+    <style>
+        /* CSS for the navigation bar */
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            box-sizing: border-box;
+            position: relative;
+            width: 100%;
+            max-width: 100%; /* Adjust maximum width as needed */
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            width: 100%; /* Set nav width to full width */
+        }
+
+        .navbar-ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-list {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        .navbar-list a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .navbar-list a:hover {
+            color: #ccc;
+        }
+
+        .vertical-divider {
+            border: 1px solid white;
+            height: 15px;
+            margin-top: 0px;
+        }
+
+        .brand {
+            cursor: pointer;
+        }
+
+        .logo {
+            cursor: pointer;
+            height: 20px;
+            position: relative;
+            margin-right: -25px;
+            margin-left: 5px;
+        }
+
+        /* exam_bar */
+        .exam_name_bar {
+            display: flex;
+            flex-direction: row;
+            align-items: center; /* Align items vertically in the center */
+            background-color: #04aa6d;
+            padding: 0;
+            width: 100%;
+            line-height: 50px;
+        }
+
+        .exam_logo {
+            margin-right: 30px;
+        }
+
+
+
+        /* demo breadcrumb */
+        .breadcrumbs {
+            display: inline-flex;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .breadcrumbs__item {
+            background: #fff;
+            color: #333;
+            outline: none;
+            padding: 0.75em 0.75em 0.75em 1.25em;
+            position: relative;
+            text-decoration: none;
+            transition: background 0.2s linear;
+            width: 100%;
+            text-align: center;
+        }
+
+        .breadcrumbs__item:focus:after,
+        .breadcrumbs__item:focus,
+        .breadcrumbs__item.is-active:focus {
+            background: blue;
+            color: #fff;
+        }
+
+        .breadcrumbs__item:after,
+        .breadcrumbs__item:before {
+            background: white;
+            bottom: 0;
+            clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+            content: "";
+            left: 100%;
+            position: absolute;
+            top: 0;
+            transition: background 0.2s linear;
+            width: 1em;
+            z-index: 1;
+        }
+
+        .breadcrumbs__item.is-active::after {
+            background: blue;
+        }
+
+        .breadcrumbs__item:before {
+            background: #cbd2d9;
+            margin-left: 1px;
+        }
+
+        .breadcrumbs__item:last-child {
+            border-right: none;
+        }
+
+        .breadcrumbs__item.is-active {
+            background: blue; 
+        }
+                
+        .breadcrumbs__item.disabled {
+            pointer-events: none; /* Disable pointer events */
+        }
+
+        /* Additional div below breadcrumb */
+        #additional-info {
+            display: flex;
+            flex-wrap: wrap;
+            border: 5px solid #ccc;
+        }
+
+        .info-section {
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            justify-content: right;
+        }
+
+        .left-info {
+          justify-content: left;
+        }
+
+        .right-info {
+          justify-content: right;
+        }
+
+        .enter_button, .start_button {
+            background-color: #04aa6d;
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .right-info-data {
+            text-align: left;
+        }
+
+        .content-section {
+            display: none; /* Initially hide all content sections */
+        }
+
+        .active-content {
+            display: block; /* Display the active content section */
+        }
+
+        @media screen and (min-width: 768px) {
+            .navbar-list {
+                margin-right: 30px;
+            }
+
+            .vertical-divider {
+                display: inline-block;
+            }
+
+            .breadcrumbs__item {
+                padding: 0.75em 0.5em;
+            }
+
+            #additional-info .info-section {
+                width: 50%;
+                text-align: center;
+            }
+
+            #additional-info .info-section:last-child {
+                margin-top: 0;
+            }
+        }
+
+          /* Truncate exam_head text */
+          .exam_head {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 20%; /* Adjust max-width based on your design */
+        }
+
+        .timer {
+            font-size: 20px;
+            background-color: lightskyblue;
+            margin-left: 16em;
+            margin-right: auto;
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+
+    #gi_div {
+        border: 5px solid #ccc;
+        padding: 20px;
+        margin-top: 0;
+        box-sizing: border-box;
+        /* justify-content: center; */
+    }
+    #questions_id{
+        border: 5px solid #ccc;
+        padding: 20px;
+        margin-top: 0;
+        box-sizing: border-box;
+        justify-content: center;
+    }
+    .gi_div {
+    display: flexbox;
+}
+
+.gi_div_left {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+}
+
+.gi_div_right {
+    flex: 1;
+    display: flex;
+    justify-content: center;  /*Center the content horizontally*/
+    align-items: right; /* Center the content vertically  */
+}
+
+.gi_left {
+    text-align: left; /* Center the text horizontally */
+}
+
+.gi_right {
+    margin-top: 10%;
+    text-align: left;
+    /* text-align: center; Center the text horizontally */
+}
+.gi_right_imp{
+    border: 1px solid lightgray;
+    margin-top: 10%;
+    background-color: lightgray;
+    text-align: left;
+}
+.red-blink {
+    color: red;
+    animation: blink-animation 1s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<div class="container" >
+    <nav class="navbar" id="navbar">
+      <ul class="navbar-ul">
+        <li class="navbar-list">
+          <img class="logo" src="./download.png" alt="Logo" />
+        </li>
+        <li class="navbar-list">
+          <a class="brand">EXAMEASE</a>
+        </li>
+        <li class="navbar-list"><a class="vertical-divider"></a></li>
+        <li class="navbar-list">
+          <a class="active" href="#"><i class="fa fa-fw fa-home"></i> Home</a>
+        </li>
+        <li class="navbar-list">
+          <a href="#"><i class="fa fa-fw fa-search"></i> Search</a>
+        </li>
+        <li class="navbar-list">
+          <a href="#"><i class="fa fa-fw fa-envelope"></i> Contact</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="exam_name_bar">
+        <div class="exam_logo">
+            <img src="" alt="exam_logo"/>
+        </div>
+        <div class="exam_head">IIT DELHI CS DEPARTMENT-TESTtfhzdrghzdfgrgsdgvsdgfsd</div>
+        <div class="timer" id="timer">01:30:00</div> <!-- Static timer -->
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="breadcrumbs__item is-active"  >
+            Enter the test
+        </div>
+        <div class="breadcrumbs__item" >
+            General Instruction
+        </div>
+        <div class="breadcrumbs__item"  >
+            Question page
+        </div>
+    </div>
+
+    <!-- Additional info below breadcrumb -->
+    <div id="additional-info">
+        <div class="info-section left-info">
+            <div class="left-info-data">
+                <p>IIT DELHI CS DEPT - TEST DRAFT 1</p>
+                <p>BY IIT Delhi CS dept</p>
+                <p>DURATION: 1HR 30MINS</p>
+            </div>
+        </div>
+        <div class="info-section right-info">
+            <div class="right-info-data">
+                <p>
+                    <input id="agree_check" class="agree_check" type="checkbox"/>
+                    I agree to the Privacy Policy and Terms of Use of EXAMEASE
+                </p>
+                <button class="enter_button" onclick="enterTest()">Enter the test</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- General Instruction Content Section -->
+    <div id="gi_div" class="content-section gi_div">
+        <div class="gi_div_left">
+            <div class="gi_left">
+                <div>
+                    <p><h4>General instructions</h4></p>
+                    <hr style="height:2px;border-width:0;color:lightgray;background-color:gray" >
+                    <ul>
+                        <li>Test duration: 1 hrs 30 mins</li>
+                        <li>Ensure that your email ID is correct.</li>
+                        <li>Click Submit after you answer each question.</li>
+                    </ul>
+                </div>
+
+                <div>
+
+                    <p><br><h4>Question-specific Instructions</h4></p>
+
+                    <p><h4>Programming</h4></p>
+
+                    <ul>
+                        <li>Test duration: 1 hrs 30 mins</li>
+                        <li>Ensure that your email ID is correct.</li>
+                        <li>Click Submit after you answer each question.</li>
+                    </ul>
+
+                </div>
+               
+            </div>
+        </div>
+        <div class="gi_div_right">
+            <div class="gi_right">
+                <button class="start_button" onclick=" showQuestionContent(); hideNavbar()">Start test </button>
+
+                <div class="gi_right_imp">
+                    
+                    <ol>
+                        <p><img src="" alt="bulb">Important: Proctoring Instructions</p>
+                        <li>You can only copy and paste code within the code editor. However, nothing can be copied and pasted from any external sources including code from the code editor of another question, external websites, etc.</li>
+                    </ol>
+                   
+                </div>
+               
+            </div>
+
+        </div>
+        <!-- Add your content here -->
+    </div>
+   
+    <div id="questions_id" class="content-section  questions_id">
+      <h2>This is Question page</h2>
+      <button class="end_test_button" onclick="endTest()">End Test</button>
+    </div>
+   
+    <script>
+                    
+                var testStarted = false;
+            var interval; // Define interval outside the function to access it globally
+
+            function startTest() {
+                if (!testStarted) {
+                    testStarted = true;
+                    // lockQuestionPage();
+                    startCountdown(); // Call startCountdown() here
+                }
+            }
+            function enterTest() {
+                    var checkbox = document.querySelector('.agree_check');
+                    if (checkbox.checked) {
+                        showInstructionContent();
+                    }
+                }
+
+
+
+            function endTest() {
+                var confirmSubmit = confirm("Do you want to submit the test?");
+                if (confirmSubmit) {
+                    // Redirect to feedback page
+                    window.location.href = "feedback_page.html";
+                } 
+            }
+
+            // Event listener for the "Start test" button
+            document.querySelector(".start_button").addEventListener("click", startTest);
+
+            function startCountdown() {
+                var totalTime = 13; // 1 hour 30 minutes = 5400 seconds
+                var timerElement = document.getElementById("timer");
+
+                interval = setInterval(function() {
+                    var hours = Math.floor(totalTime / 3600);
+                    var minutes = Math.floor((totalTime % 3600) / 60);
+                    var seconds = totalTime % 60;
+
+                    // Format the time with each part in a span for separate styling
+                    var formattedTime =
+                        "<span class='hours'>" + pad(hours) + "</span>" +
+                        ":" +
+                        "<span class='minutes'>" + pad(minutes) + "</span>" +
+                        ":" +
+                        "<span class='seconds'>" + pad(seconds) + "</span>";
+
+                    // Update the timer element
+                    timerElement.innerHTML = formattedTime;
+
+                    // Decrease the total time by 1 second
+                    totalTime--;
+
+                    // Check if time is up
+                    if (totalTime < 0) {
+                        clearInterval(interval);
+                        // Show alert when time's up
+                        alert("Time has finished!");
+                        // Redirect to feedback page
+                        window.location.href = "feedback_page.html";
+                    }
+
+                    // Check if last 10 seconds
+                    if (totalTime <= 10) {
+                        // Toggle the class to make numbers blink in red
+                        document.querySelector('.hours').classList.toggle("red-blink");
+                        document.querySelector('.minutes').classList.toggle("red-blink");
+                        document.querySelector('.seconds').classList.toggle("red-blink");
+                    } else {
+                        // Ensure class is removed if not in last 10 seconds
+                        document.querySelector('.hours').classList.remove("red-blink");
+                        document.querySelector('.minutes').classList.remove("red-blink");
+                        document.querySelector('.seconds').classList.remove("red-blink");
+                    }
+                }, 1000);
+
+                // Add leading zero if the number is less than 10
+                function pad(num) {
+                    return num < 10 ? "0" + num : num;
+                }
+            }
+
+            // Event listener to call toggleEnterButton function when the checkbox state changes
+            document.querySelector('.agree_check').addEventListener('change', toggleEnterButton);
+            // Initially disable the enter button
+            toggleEnterButton();
+
+            function toggleEnterButton() {
+                var checkbox = document.querySelector('.agree_check');
+                var enterButton = document.querySelector('.enter_button');
+                
+                // Check if the checkbox is checked
+                if (checkbox.checked) {
+                    enterButton.style.backgroundColor = '#008000';
+                    enterButton.disabled = false; // Enable the enter button
+                } else {
+                    enterButton.style.backgroundColor = '#90EE90'; 
+                    enterButton.disabled = true; // Disable the enter button
+                }
+            }
+
+
+
+            function updateActive(element) {
+                // Remove active class from all breadcrumb items
+                var breadcrumbItems = document.querySelectorAll(".breadcrumbs__item");
+                breadcrumbItems.forEach(function (item) {
+                    item.classList.remove("is-active");
+                });
+
+                // Add active class to the clicked breadcrumb item
+                element.classList.add("is-active");
+            }
+
+            function showTestContent() {
+                document.getElementById("gi_div").style.display = "none";
+                document.getElementById("additional-info").style.display = "flex";
+                document.getElementById("questions_id").style.display = "none";
+                updateActive(document.querySelectorAll(".breadcrumbs__item")[0]); // Update the active breadcrumb to "Enter the test"
+            }
+
+            function showInstructionContent() {
+                document.getElementById("gi_div").style.display = "flex";
+                document.getElementById("additional-info").style.display = "none"; // Hide the additional-info section
+                document.getElementById("questions_id").style.display = "none";
+                updateActive(document.querySelectorAll(".breadcrumbs__item")[1]); // Update the active breadcrumb to "General Instruction"
+            }
+
+            function showQuestionContent() {
+                document.getElementById("gi_div").style.display = "none";
+                document.getElementById("additional-info").style.display = "none";
+                document.getElementById("questions_id").style.display = "flex";
+                updateActive(document.querySelectorAll(".breadcrumbs__item")[2]);
+            }
+
+            function hideNavbar() {
+                document.getElementById("navbar").style.display = "none";
+            }
+
+    </script>
+</body>
+</html>
